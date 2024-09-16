@@ -17,12 +17,13 @@ export async function POST() {
     // const fontPath = path.join(process.cwd(), "public", "Roboto-Regular.ttf");
 
     const escapePath = (filePath: string) => filePath.replace(/\\/g, "/");
-
     const ffmpegCommand = `ffmpeg -i "${escapePath(
       inputVideo
     )}" -i "${escapePath(
       inputImage
-    )}" -filter_complex "[0]scale=200:200[bg];[1][bg]overlay" -c:a copy "${escapePath(
+    )}" -filter_complex "[0]scale=200:200[bg];[1][bg]overlay=(main_w-overlay_w)/2:(main_h-overlay_h)/2,drawtext=fontfile=${escapePath(
+      "public/Roboto-Regular.ttf"
+    )}:text='Your text here':fontcolor=black:fontsize=24:x=(w-text_w)/2:y=h-text_h-30" -c:a copy "${escapePath(
       outputPath
     )}"`;
 
